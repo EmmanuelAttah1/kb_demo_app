@@ -1,6 +1,6 @@
 import { getCookie, setCookie, checkCookie } from "./cookieHelper"
 
-const address = "http://ec2-54-89-38-48.compute-1.amazonaws.com:8000/"//"http://127.0.0.1:8000/" 
+const address = "https://ec2-54-89-38-48.compute-1.amazonaws.com:8000/"//"http://127.0.0.1:8000/" 
 
 const get_url = (path, urlParams) => {
 	let url = `${address}${path}`
