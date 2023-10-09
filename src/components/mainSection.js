@@ -75,7 +75,7 @@ export const MainSection = props =>{
 
     const chatSocket = new WebSocket(
         'ws://'
-        + 'localhost:8000'
+        + 'http://ec2-54-89-38-48.compute-1.amazonaws.com:8000'
         + '/ws/chat/'
     );
     
