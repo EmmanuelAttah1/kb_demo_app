@@ -1,0 +1,148 @@
+#sidebar-container{
+    height:100vh;
+    background-color: #111a30;
+    position:relative;
+    transition: .3s;
+    color:#ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#sidebar-profile{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding:20px 10px;
+    color:#ffffff;
+    border-top: 1px solid #e4dcdccd;
+    cursor: pointer;
+}
+
+#my-sidebar-head{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 20px;
+}
+
+#logout-btn{
+    font-size: 12px;
+    cursor: pointer;
+}
+
+#logout-btn:hover{
+    font-weight: bold;
+}
+
+
+#our-logo{
+    padding: 10px;
+    margin-top: 18px;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+#sidebar-name{
+    font-weight: 500;
+    font-size: 14px;
+}
+
+#sidebar-content{
+    padding: 0px 15px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.sidebar-content-group{
+    margin-bottom: 40px;
+}
+
+.sidebar-content-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.sidebar-content-header div{
+    font-size: 12px;
+}
+
+.sidebar-content-header-name{
+    color:#ffffffd6;
+}
+
+.sidebar-list-item{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    cursor: pointer;
+    justify-content: space-between;
+}
+
+.sidebar-list-item div{
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.sidebar-list-item-active{
+    background-color: #ffffff52;
+    border-radius: 5px;
+}
+
+.sidebar-btn-container{
+    display: flex;
+}
+
+.side-bar-text-container{
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+
+}
+
+.sidebar-btn{
+    width:20px;
+    height: 20px;
+    border-radius: 5px;
+    margin: 0px 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar-content-header-action{
+    padding: 10px;
+    border: 1px solid rgba(179, 170, 170, 0.937);
+    border-radius: 5px;
+    color:#ffffffd6;
+    cursor: pointer;
+}
+
+
+.sidebar-see-all{
+    font-size: 12px;
+    color:#ffffffd6;
+    margin-top: 10px;
+    text-align: right;
+    cursor: pointer;
+}
+
+.sidebar-see-all:hover{
+    color:#ffffffe7;
+}
+
+
+@media only screen and (max-width: 1300px) {
+    #sidebar-container{
+        position: absolute;
+        z-index: 5;
+    }
+  }

@@ -1,0 +1,115 @@
+#chatbot-container{
+    width:800px;
+    height: fit-content;
+    display: grid;
+    grid-template-columns: 4fr 2fr;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 30px 0px;
+}
+
+#chat-interface{
+    border-right: 1px solid rgba(179, 170, 170, 0.937);
+    display: flex;
+    flex-direction: column;
+    padding-right: 20px;
+}
+
+#chat-box{
+    display: flex;
+    width: 100%;
+    border: 1px solid rgba(179, 170, 170, 0.937);
+    border-radius: 10px;
+    padding: 10px;
+    align-items: center;
+}
+
+#chat-box textarea{
+    width: 100%;
+    font-size: 14px;
+    border: 0px;
+    outline: none;
+    background-color: transparent;
+    height: fit-content;
+    overflow: hidden;
+}
+
+#submit-btn{
+    height: fit-content;
+    background-color: #38A3A5;
+    margin-left: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    color:#ffffff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#messages{
+    height: 100%;
+}
+
+.chat{
+    width:100%;
+    display: grid;
+    margin-bottom: 20px;
+}
+
+.chat-inner{
+    width:80%;
+    background-color: #e6e2e2;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: justify;
+    font-size: 14px;
+}
+
+#source-documents{
+    padding-left: 20px;
+    min-height: 400px;
+}
+
+#all-docs{
+    margin-top: 20px;
+}
+
+.doc{
+    width:100%;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #22577A;
+    color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.rm-doc-btn{
+    cursor: pointer;
+}
+
+#doc-top{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#add-doc{
+    cursor: pointer;
+    font-size: 13px;
+    text-decoration: underline;
+}
+
+#add-doc:hover{
+    font-weight: 500;
+}
+
+#hidden-file{
+    display: none;
+}
+
+h3{
+    font-weight: 500;
+}

@@ -1,0 +1,22 @@
+.document-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0px;
+}
+
+.document-info{
+    display: flex;
+    align-items: center;
+}
+
+.document-logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.document-del{
+    cursor: pointer;
+}

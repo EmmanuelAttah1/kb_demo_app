@@ -36,3 +36,27 @@
     transform: rotate(360deg);
   }
 }
+
+#main-container{
+  display: flex;
+  width:100%;
+}
+
+#login-container{
+  padding: 10px 0px;
+}
+
+
+.login-div{
+  margin-bottom: 10px;
+}
+
+.login-div div{
+  margin-bottom: 5px;
+}
+
+#login-error{
+  text-align: center;
+  font-weight: bold;
+  color: rgb(163, 24, 24);
+}

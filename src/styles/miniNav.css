@@ -1,0 +1,33 @@
+#mini-nav-container{
+    display: flex;
+    padding:5px;
+    background-color: #f0f0f0;
+    height: fit-content;
+    width: fit-content;
+    border-radius: 10px;
+}
+
+.mini-nav-option{
+    padding: 10px 0px;
+    width: 200px;
+    text-align: center;
+    border-radius: 10px;
+    height: fit-content;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 500;
+    opacity: .7;
+}
+
+.mini-nav-active{
+    background-color: #ffffff;
+    opacity: 1;
+}
+
+@media only screen and (max-width: 800px) {
+    #mini-nav-container{
+        width: 98%;
+        margin: 0px 20px;
+        margin-bottom: 20px;
+    }
+  }
