@@ -76,8 +76,9 @@ export const MainSection = props =>{
     const chatSocket = new WebSocket(
         'wss://'
         + 'api.getknowledgebase.com'
-        + '/ws/chat/'
     );
+
+    // + '/ws/chat/'
     
     chatSocket.onmessage = function(e) {
         setChatLoading(false)
