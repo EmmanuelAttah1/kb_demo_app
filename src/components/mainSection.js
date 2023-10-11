@@ -73,28 +73,41 @@ export const MainSection = props =>{
         
     }
 
-    const chatSocket = new WebSocket(
-        'wss://'
-        + 'api.getknowledgebase.com'
-        + '/ws/'
-    );
+    const [ws,setWs] = useState(null)
 
-    // + '/ws/chat/'
+    useEffect(()=>{
+        if(ws === null){
+            const chatSocket = new WebSocket(
+                'wss://'
+                + 'api.getknowledgebase.com'
+                + '/ws/chat/'
+            );
+
+            chatSocket.onmessage = function(e) {
+                setChatLoading(false)
+                const data = JSON.parse(e.data);
+                addMsg(data.message,false,false)
+                .then(res=>{
+                    setChat(res)
+                    setScrollBottom(true)
+                })
+            };
+            
+            chatSocket.onclose = function(e) {
+                // setChatLoading(false)
+                console.error('Chat socket closed unexpectedly');
+            };
+
+            chatSocket.onopen = ()=>{
+                console.log("connected successfully");
+            }
     
-    chatSocket.onmessage = function(e) {
-        setChatLoading(false)
-        const data = JSON.parse(e.data);
-        addMsg(data.message,false,false)
-        .then(res=>{
-            setChat(res)
-            setScrollBottom(true)
-        })
-    };
+            setWs(chatSocket)
+        }
     
-    chatSocket.onclose = function(e) {
-        // setChatLoading(false)
-        console.error('Chat socket closed unexpectedly');
-    };
+        // + '/ws/chat/'
+
+    },[])
 
     const sendMsg=()=>{
         if(message.length > 0){
@@ -104,10 +117,12 @@ export const MainSection = props =>{
                 setChat(res)
                 setMessage("")
                 setScrollBottom(true)
-                chatSocket.send(JSON.stringify({
-                    'id':queryId,
-                    'message': message
-                }))                
+                if(ws !== null){
+                    ws.send(JSON.stringify({
+                        'id':queryId,
+                        'message': message
+                    }))
+                }                
             })
         }
     }
