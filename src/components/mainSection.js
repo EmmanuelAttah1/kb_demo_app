@@ -4,7 +4,6 @@ import {DoubleLeftOutlined,MenuOutlined,DoubleRightOutlined,CloseOutlined} from 
 import { Button, Empty } from "antd"
 import { useState, useRef, useEffect } from "react"
 import { MyDocument } from "./document"
-import { ChatMessage } from "./message"
 import { QueryTab } from "../tabs/query"
 import { ReportTab } from "../tabs/report"
 
@@ -13,13 +12,10 @@ import { MyReport } from "./report_template"
 import { MobileNav } from "./mobile_nav"
 import { ImageTab } from "../tabs/image"
 
-import { useResolvedPath } from "react-router-dom"
-
-import { manageServerCall } from "../Api/serverCall"
+import { manageServerCall, address } from "../Api/serverCall"
 
 
 const size = "24px"
-const addr = "http://127.0.0.1:8000/"
 
 export const MainSection = props =>{
 
@@ -34,7 +30,9 @@ export const MainSection = props =>{
         toggleSrcTab,
         selectedObject,
         setSelectedObject,
-        reloadProp
+        reloadProp,
+        chats,
+        setChat
     } = props
     
     const [chatLoading,setChatLoading] = useState(false)
@@ -44,31 +42,35 @@ export const MainSection = props =>{
     const [reportData, setReportData] = useState(null)
 
     const [message,setMessage] = useState("")
-    const {chats,setChat} = props
+
     let prevMsg = null
 
 
     const addMsg=(message,mine=true,save=false)=>{
         return new Promise((resolve,reject)=>{
-            const all_chat = [...chats]
 
             const msg_data = {
-                id:all_chat.length+1,
+                id:chats.length+1,
                 text:message,
                 mine:mine
             }
-            if(save){
-                prevMsg = msg_data
-            }else{
-                if(prevMsg !== null){
-                    all_chat.push(prevMsg)
-                    prevMsg = null
-                    msg_data.id = msg_data.id + 1
-                }
-            }
+            
+            // if(save){
+            //     prevMsg = msg_data
+            // }else{
+            //     if(prevMsg !== null){
+            //         data.push(prevMsg)
+            //         prevMsg = null
+            //         msg_data.id = msg_data.id + 1
+            //     }
+            // }
 
-            all_chat.push(msg_data)
-            resolve(all_chat)
+            // data.push(msg_data)
+
+            // console.log("data id ",data);
+
+            // console.log("chats are ",data);
+            resolve(msg_data)
         })
         
     }
@@ -78,17 +80,22 @@ export const MainSection = props =>{
     useEffect(()=>{
         if(ws === null){
             const chatSocket = new WebSocket(
-                'wss://'
-                + 'api.getknowledgebase.com'
+                'ws://'
+                + address
                 + '/ws/chat/'
             );
 
             chatSocket.onmessage = function(e) {
                 setChatLoading(false)
+                console.log("we are inside message ");
+                
                 const data = JSON.parse(e.data);
+
+                console.log("we dey here with data ",data, "chats = ",chats);
                 addMsg(data.message,false,false)
                 .then(res=>{
-                    setChat(res)
+                    console.log(res);
+                    setChat((prevChats) => [...prevChats, res])
                     setScrollBottom(true)
                 })
             };
@@ -110,19 +117,19 @@ export const MainSection = props =>{
     },[])
 
     const sendMsg=()=>{
-        if(message.length > 0){
+        if(message.length > 0 && (ws !== null)){
             setChatLoading(true)
             addMsg(message,true,true)
             .then(res=>{
-                setChat(res)
+                setChat((prevChats) => [...prevChats, res])
                 setMessage("")
                 setScrollBottom(true)
-                if(ws !== null){
-                    ws.send(JSON.stringify({
-                        'id':queryId,
-                        'message': message
-                    }))
-                }                
+                
+                ws.send(JSON.stringify({
+                    'id':queryId,
+                    'message': message
+                }))
+                              
             })
         }
     }
@@ -236,6 +243,7 @@ export const MainSection = props =>{
                             setSelectedObject={setSelectedObject}
                             selectedObject={selectedObject}
                             reloadProp = {reloadProp}
+                            navigate={navigate}
                         />}/>
                     <Route exact path="/image" element={<ImageTab setActiveTab={setActiveTab} reloadProp = {reloadProp}/>}/>
                     <Route path="*" element={<h1>Page Not Found</h1>}/>

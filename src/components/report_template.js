@@ -30,24 +30,56 @@ export const MyReport = props =>{
 
     const [reportTitle, setReportTitle] = useState("")
 
-    const [editorData, setEditorData] = useState(
-        {
-            time: 1695629975765,
-            blocks: getEditorData()
-        }
-    )
+    const [editorData, setEditorData] = useState({time: 1695898792823,blocks:[]})
 
     const editorCreatedRef = useRef(false);
+
+    // Create a ref to store the EditorJS instance
+    const editorRef = useRef();
+
     const params = useParams()
 
     const id = parseInt(params.id)
 
-    console.log(params," ",id + 30);
+    // Use a useEffect to initialize or update the editor
+    useEffect(() => {
+        const my_image = require('@editorjs/simple-image');
 
-    useEffect(()=>{
-        console.log("mounting");
-        props.setSelectedObject({section:"report",id:id})
-    },[])
+        if (!editorCreatedRef.current) {
+            // Create the EditorJS instance
+            const editor = new EditorJS({
+                placeholder: 'Let`s write an awesome story!',
+                onReady: () => {
+                    console.log('Editor.js is ready to work!');
+                },
+                onChange: (api, event) => {
+                    console.log("Now I know that Editor's content changed!", event);
+                },
+                data: editorData, // Use the current value of editorData
+                tools: {
+                    header: Header,
+                    image: my_image,
+                    list: List
+                },
+            });
+
+            // Store the EditorJS instance in the ref
+            editorRef.current = editor;
+
+            // Set a flag indicating that the editor is created
+            editorCreatedRef.current = true;
+            console.log(props.selectedObject, " ", editor);
+        } else {
+            // If the editor is already created, update its data
+            editorRef.current.isReady
+                .then(() => {
+                    editorRef.current.render({ blocks: editorData.blocks });
+                })
+                .catch((error) => {
+                    console.error('Error updating editor data:', error);
+                });
+        }
+    }, [editorData]);
     
 
     useEffect(()=>{
@@ -57,37 +89,16 @@ export const MyReport = props =>{
         setLoading(true)
         manageServerCall("GET",`chat/get-report/${params.id}`)
         .then(res=>{
-            if (!editorCreatedRef.current) {
+            if(res.data === null){
+                //navigate to 404 page
+                props.navigate("/error/404")
+            }else{
                 setReportTitle(res.data.name)
-                console.log("creating editor");
                 setLoading(false)
-                const editor = new EditorJS({
-                    placeholder: 'Let`s write an awesome story!',
-                    onReady: () => {
-                        console.log('Editor.js is ready to work!')
-                    },
-                    data: {time: 1695898792823,blocks:JSON.parse(res.data.report)},
-                    tools: { 
-                        header: {
-                          class: Header, 
-                          inlineToolbar: ['link'] 
-                        }, 
-                        image: {
-                            class: Image, 
-                            inlineToolbar: ['link'] 
-                          }, 
-                        list: { 
-                          class: List, 
-                          inlineToolbar: true 
-                        } 
-                      },  
-                });
-    
-                editorCreatedRef.current = true;
-                console.log(props.selectedObject);
+                setEditorData({time:7566575757,blocks:JSON.parse(res.data.report)})
             }
         })
-    },[props.reloadProp])
+    },[props.reloadProp,params.id])
 
     return(
         <div id="editor-container">

@@ -1,6 +1,6 @@
-import { getCookie, setCookie, checkCookie } from "./cookieHelper"
+import { getCookie } from "./cookieHelper"
 
-const address = "https://api.getknowledgebase.com/"//"http://127.0.0.1:8000/" 
+export const address = "https://api.getknowledgebase.com/"
 
 const get_url = (path, urlParams) => {
 	let url = `${address}${path}`

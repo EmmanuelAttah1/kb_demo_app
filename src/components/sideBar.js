@@ -7,9 +7,21 @@ import {manageServerCall} from "../Api/serverCall"
 
 import { useResolvedPath,useParams } from "react-router-dom"
 
-import { Button, Input, Modal, Popconfirm,Popover} from 'antd';
+import { Button, Input, Modal, Popconfirm,Popover,Spin} from 'antd';
 
 import { setCookie } from "../Api/cookieHelper"
+
+import { LoadingOutlined } from '@ant-design/icons';
+
+
+const antIcon = (
+    <LoadingOutlined
+      style={{
+        fontSize: 24,
+      }}
+      spin
+    />
+  );  
 
 
 export const SideBar=props=>{
@@ -18,6 +30,7 @@ export const SideBar=props=>{
     const {selectedObject,setSelectedObject,getChatMessages,navigate, activeTab, setActiveTab,setFirstChat} = props
     const [chats,setChats] = useState([])
     const [reports,setReports] = useState([])
+    const [newChatLoading,setNewChatLoading] = useState(false)
 
     const logout=()=>{
         setCookie("token","",0)
@@ -99,7 +112,7 @@ export const SideBar=props=>{
         if(type === "chat"){
             setChats(data)
         }else{
-            setReports(reports)
+            setReports(data)
         }
 
         manageServerCall("POST","chat/delete/",form)
@@ -157,18 +170,22 @@ export const SideBar=props=>{
     },[props.reloadProp])
 
     const newChat=()=>{
-        manageServerCall("POST","chat/new/")
-        .then(res=>{
-            console.log(res);
-            if(res.created){
-                const all_chat = [...chats]
-                let new_chat = [{chat_name:"New chat",id:res.id}]
-                new_chat = new_chat.concat(all_chat)
-                
-                setChats(new_chat)
-            }
-            selectChat(res.id)
-        })
+        if(!newChatLoading){
+            setNewChatLoading(true)
+            manageServerCall("POST","chat/new/")
+            .then(res=>{
+                console.log(res);
+                setNewChatLoading(false)
+                if(res.created){
+                    const all_chat = [...chats]
+                    let new_chat = [{chat_name:"New chat",id:res.id}]
+                    new_chat = new_chat.concat(all_chat)
+                    
+                    setChats(new_chat)
+                }
+                selectChat(res.id)
+            })
+        }
     }
 
     const selectChat=id=>{
@@ -215,7 +232,7 @@ export const SideBar=props=>{
                 <div className="sidebar-content-group">
                     <div className="sidebar-content-header">
                         <div className="sidebar-content-header-name">Chats</div>
-                        <div className="sidebar-content-header-action" onClick={newChat}>+ New chat</div>
+                        <div className="sidebar-content-header-action" onClick={newChat}>{newChatLoading?<Spin style={{color:"#ffffff"}} indicator={antIcon} />:"+ New chat"}</div>
                     </div>
                     <div className="sidebar-content-list">
                         {

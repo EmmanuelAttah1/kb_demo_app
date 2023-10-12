@@ -17,7 +17,6 @@
     "@editorjs/paragraph": "^2.10.0",
     "@editorjs/quote": "^2.5.0",
     "@editorjs/raw": "^2.4.0",
-    "@editorjs/simple-image": "^1.5.1",
     "@editorjs/table": "^2.2.2",
     "@editorjs/warning": "^1.3.0",
     "@testing-library/jest-dom": "^5.17.0",
@@ -54,5 +53,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@editorjs/simple-image": "^1.5.1"
   }
 }
