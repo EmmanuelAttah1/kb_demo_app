@@ -1,9 +1,10 @@
 import { getCookie } from "./cookieHelper"
 
-export const address = "https://api.getknowledgebase.com/"
+export const address = "api.getknowledgebase.com"
+
 
 const get_url = (path, urlParams) => {
-	let url = `${address}${path}`
+	let url = `https://${address}/${path}`
 	if (urlParams !== undefined) {
 		for (let q in urlParams) {
 			if (url.includes("?")) {
