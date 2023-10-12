@@ -80,7 +80,7 @@ export const MainSection = props =>{
     useEffect(()=>{
         if(ws === null){
             const chatSocket = new WebSocket(
-                'ws://'
+                'wss://'
                 + address
                 + '/ws/chat/'
             );
