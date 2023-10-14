@@ -79,6 +79,7 @@ export const MainSection = props =>{
 
     useEffect(()=>{
         if(ws === null){
+            // console.log("connecting to ws");
             const chatSocket = new WebSocket(
                 'wss://'
                 + address
@@ -87,11 +88,9 @@ export const MainSection = props =>{
 
             chatSocket.onmessage = function(e) {
                 setChatLoading(false)
-                console.log("we are inside message ");
                 
                 const data = JSON.parse(e.data);
 
-                console.log("we dey here with data ",data, "chats = ",chats);
                 addMsg(data.message,false,false)
                 .then(res=>{
                     console.log(res);
@@ -178,7 +177,6 @@ export const MainSection = props =>{
 
     const change_page=(id)=>{
         if(id === 1){
-            console.log(props.firstChat);
             if (props.firstChat){
                 navigate(`/${props.firstChat}`)
             }
@@ -275,6 +273,9 @@ export const MainSection = props =>{
                         <div>Sources</div>
                     </div>
                     <div>Polling : not set </div>
+                </div>
+                <div className="info-msg" style={{fontSize:'12px',opacity:".7",padding:"10px",margin:"25px 0px 0px 0px"}}>
+                    current accepting only <b>PDF</b> <b>xlsx</b> and <b>xls</b> documents
                 </div>
                 <div id="sources-content">
                     {allDocs.length===0?

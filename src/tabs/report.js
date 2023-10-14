@@ -2,7 +2,7 @@ import { ReportInfo } from "../components/report_topics";
 import "../styles/reportTab.css"
 import { Input, Checkbox, Button } from 'antd';
 import { useState, useEffect } from "react";
-import { manageServerCall } from "../Api/serverCall";
+import { manageServerCall, address } from "../Api/serverCall";
 
 const {TextArea} = Input
 
@@ -18,6 +18,41 @@ export const ReportTab=props=>{
         props.setActiveTab(2)
     },[])
 
+    const [ws,setWs] = useState(null)
+
+    useEffect(()=>{
+        if(ws === null){
+            console.log("connecting to ws report");
+            const chatSocket = new WebSocket(
+                'wss://'
+                + address
+                + '/ws/report/'
+            );
+
+            chatSocket.onmessage = function(e) {
+                setLoading(false)
+                
+                const data = JSON.parse(e.data);
+
+                props.navigate(`/report/${data.id}`)
+            };
+            
+            chatSocket.onclose = function(e) {
+                // setChatLoading(false)
+                console.error('Chat socket closed unexpectedly');
+            };
+
+            chatSocket.onopen = ()=>{
+                console.log("connected to report ws successfully");
+            }
+    
+            setWs(chatSocket)
+        }
+    
+        // + '/ws/chat/'
+
+    },[])
+
     const [loading,setLoading] = useState(false)
     const [reportData,setReportData] = useState(form_template)
 
@@ -28,24 +63,33 @@ export const ReportTab=props=>{
     }
 
     const draft_report=()=>{
-        const form = new FormData()
-        form.append("title",reportData.title)
-        form.append("details",reportData.details)
+        // const form = new FormData()
+        // form.append("title",reportData.title)
+        // form.append("details",reportData.details)
+
+        const data=JSON.stringify({title:reportData.title,details:reportData.details})
 
         setLoading(true)
 
-        manageServerCall("POST","chat/draft-report/",form)
-        .then(res=>{
-            console.log(res);
-            setLoading(false)
-            props.navigate(`/report/${res.data.id}`)
-        })
+        // manageServerCall("POST","chat/draft-report/",form)
+        // .then(res=>{
+        //     console.log(res);
+        //     setLoading(false)
+        //     props.navigate(`/report/${res.data.id}`)
+        // })
+
+        ws.send(data)
     }
 
     return (
         <>
         <div id="report-tab-container">
             <div id="report-tab-container-inner">
+                <div className="info-msg">
+                    This is demo will generate only the introductory section of the report <br/>
+
+                    we are doing this to reduce cost and to make it easy for us to debug the application
+                </div>
                 {
                     <>
                         <div className="custom-input">
@@ -70,6 +114,7 @@ export const ReportTab=props=>{
                                 <Button loading={loading} type="primary" block onClick={draft_report}>
                                     {loading?"Drafting report... please wait":"Draft report"}
                                 </Button>
+                                {loading&&<div className="loading-wait">This might take some time...</div>}
                             </div>
                         </div>
                     </>

@@ -8,7 +8,7 @@ import Image from '@editorjs/image'
 
 import {getEditorData} from "../test_data/editor_blocks.js"
 
-import { manageServerCall } from "../Api/serverCall";
+import { manageServerCall, address, protocol } from "../Api/serverCall";
 
 import { json, useParams } from "react-router-dom";
 
@@ -50,15 +50,30 @@ export const MyReport = props =>{
             const editor = new EditorJS({
                 placeholder: 'Let`s write an awesome story!',
                 onReady: () => {
-                    console.log('Editor.js is ready to work!');
+                    //console.log('Editor.js is ready to work!');
                 },
                 onChange: (api, event) => {
-                    console.log("Now I know that Editor's content changed!", event);
+                    editor.save().then((outputData) => {
+                        const form = new FormData()
+                        form.append("report", JSON.stringify(outputData.blocks))
+                        form.append("id",id)
+                        manageServerCall("POST","doc/update-report/",form,true)
+                    }).catch((error) => {
+                        //console.log('Saving failed: ', error)
+                    });
                 },
                 data: editorData, // Use the current value of editorData
                 tools: {
                     header: Header,
                     image: my_image,
+                    image: {
+                        class: Image,
+                        config: {
+                          endpoints: {
+                            byFile: `${protocol}://${address}/doc/upload/`, // Your backend file uploader endpoint
+                          }
+                        }
+                      },
                     list: List
                 },
             });
@@ -68,7 +83,6 @@ export const MyReport = props =>{
 
             // Set a flag indicating that the editor is created
             editorCreatedRef.current = true;
-            console.log(props.selectedObject, " ", editor);
         } else {
             // If the editor is already created, update its data
             editorRef.current.isReady
@@ -83,7 +97,6 @@ export const MyReport = props =>{
     
 
     useEffect(()=>{
-        console.log(params.id);
 
         props.setActiveTab(null)
         setLoading(true)

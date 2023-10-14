@@ -66,6 +66,12 @@
     margin: 5px 0px;
 }
 
+.loading-wait{
+    margin: 20px 0px;
+    text-align: center;
+    font-weight: 500;
+}
+
 
 @media only screen and (max-width: 800px) {
     #editor-container{
