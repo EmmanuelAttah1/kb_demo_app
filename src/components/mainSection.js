@@ -12,7 +12,7 @@ import { MyReport } from "./report_template"
 import { MobileNav } from "./mobile_nav"
 import { ImageTab } from "../tabs/image"
 
-import { manageServerCall, address } from "../Api/serverCall"
+import { manageServerCall, address,ws_protocol } from "../Api/serverCall"
 
 
 const size = "24px"
@@ -81,7 +81,7 @@ export const MainSection = props =>{
         if(ws === null){
             // console.log("connecting to ws");
             const chatSocket = new WebSocket(
-                'wss://'
+                `${ws_protocol}://`
                 + address
                 + '/ws/chat/'
             );

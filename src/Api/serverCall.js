@@ -1,7 +1,8 @@
 import { getCookie } from "./cookieHelper"
 
 export const address = "api.getknowledgebase.com"
-export const protocol = "https" 
+export const protocol = "https"//"https" 
+export const ws_protocol = "wss"
 
 
 const get_url = (path, urlParams) => {

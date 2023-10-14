@@ -1,8 +1,8 @@
 import { ReportInfo } from "../components/report_topics";
 import "../styles/reportTab.css"
-import { Input, Checkbox, Button } from 'antd';
+import { Input, Button } from 'antd';
 import { useState, useEffect } from "react";
-import { manageServerCall, address } from "../Api/serverCall";
+import {address, ws_protocol } from "../Api/serverCall";
 
 const {TextArea} = Input
 
@@ -24,7 +24,7 @@ export const ReportTab=props=>{
         if(ws === null){
             console.log("connecting to ws report");
             const chatSocket = new WebSocket(
-                'wss://'
+                `${ws_protocol}://`
                 + address
                 + '/ws/report/'
             );
